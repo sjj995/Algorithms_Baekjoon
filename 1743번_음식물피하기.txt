@@ -1,0 +1,76 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<stack>
+#include<cstring>
+#include<string>
+#include<iomanip>
+
+using namespace std;
+
+int num, cnt;
+double ans,e,w,s,n,res,sum;
+int map[31][31];
+int dx[4] = {0,0,1,-1};
+int dy[4] = {1,-1,0,0};
+bool visited[31][31];
+
+
+
+void dfs(int x, int y, int cnt, double ans) { //전형적인 dfs
+	if (visited[x][y]) { //방문했던거면 종료시켜버리기
+		return;
+	}
+	visited[x][y] = 1; //dfs 호출하고 방문처리 해주기
+	if (cnt == num) {
+		res += ans;
+		visited[x][y] = 0; //다른방향에서 dfs로 찍을때 안 겹치게 하기위해서
+		return;
+	}
+
+
+	for (int i = 0; i < 4; i++) {
+		int xx = dx[i] + x;
+		int yy = dy[i] + y;
+		if (!visited[xx][yy]) {
+			if (i == 0){
+				dfs(xx, yy, cnt + 1, ans*e);
+				visited[xx][yy] = 0;
+			}
+			else if (i == 1) {
+				
+				dfs(xx, yy, cnt + 1, ans*w);
+				visited[xx][yy] = 0;
+			}
+			else if (i == 2) {
+				
+				dfs(xx, yy, cnt + 1, ans*s);
+				visited[xx][yy] = 0;	
+			}
+			else if (i == 3) {
+				dfs(xx, yy, cnt + 1, ans*n);
+				visited[xx][yy] = 0;
+			}
+		}
+		
+	}
+}
+
+
+int main() {
+	ios::sync_with_stdio(0); cin.tie(NULL);
+	cin >> num >> e >> w >> s >> n;
+	e = e / 100.0;
+	w = w / 100.0;
+	s = s / 100.0;
+	n = n / 100.0;
+
+	dfs(15, 15,0,1.0);
+
+	cout << fixed << setprecision(11) << res << '\n';
+
+}
+
+
+
