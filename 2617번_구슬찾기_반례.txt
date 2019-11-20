@@ -1,0 +1,61 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int map[100][100];
+bool visited[100][100];
+int chk_in[100];
+int chk_out[100];
+int n, m, gu,seul,in_chk,out_chk,ans;
+
+//IN_DFS랑 OUT_DFS랑 같이 처리해주면 힘듬... 테케는 가능했지만
+//2 1 1 2 같은 경우에는 하나의 간선 밖에 처리가 안됨
+
+void dfs(int x, int y) {
+	visited[x][y] = 1;
+	in_chk++;
+	chk_in[y] += in_chk; //(1,2)면 2의 정점에 들어오는 간선의 개수
+
+	for (int i = 1; i <= n; i++) {
+		if (i >= 0 && y >= 0 && map[y][i] && !visited[y][i]) {
+			dfs(y, i);
+			out_chk = 1;
+			chk_out[y] += out_chk;
+			out_chk++;
+		}
+	}
+}
+
+int main() {
+
+	cin >> n >> m;
+
+	for (int i = 0; i < m; i++) {
+		cin >> gu >> seul;
+		map[seul][gu] = 1;
+	}
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			if (map[i][j]&&!visited[i][j]) {
+				dfs(i,j);
+				chk_out[i] += out_chk;
+				out_chk = 1;
+				in_chk = 0;
+			}
+		}
+	}
+
+	for (int i = 1; i <= n; i++) {
+		if (chk_in[i] >= ((n + 1) / 2)){
+			ans++;
+		}
+		if (chk_out[i] >= ((n + 1) / 2)) {
+			ans++;
+		}
+	}
+
+	cout << ans << "\n";
+
+}
