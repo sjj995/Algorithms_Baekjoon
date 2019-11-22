@@ -1,0 +1,99 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+int t,cnt,ans,r,l,front_cnt,back_cnt;
+string s;
+
+int front() {
+	int l = 0;
+	int r = s.length() - 1;
+	while (r > l) {
+		if (s[l] != s[r]) {
+			if ((r - l) == 1) {
+				cnt++;
+			}
+			if (s[l + 1] == s[r] && (l + 1 < r)) {
+				l++;
+				cnt++;
+			}
+			else if (s[l] == s[r - 1] && (l < r - 1)) {
+				r--;
+				cnt++;
+			}
+			else if (s[l + 1] == s[r - 1] && (l + 1 < r - 1)) {
+				l++;
+				r--;
+				cnt += 2;
+			}
+			if (cnt == 2) {
+				break;
+			}
+		}
+		l++;
+		r--;
+	}
+	return cnt;
+}
+
+int back() {
+	int l = 0;
+	int r = s.length() - 1;
+	while (r > l) {
+		if (s[l] != s[r]) {
+			if ((r - l) == 1) {
+				cnt++;
+			}
+			if (s[l] == s[r - 1] && (l < r - 1)) {
+				r--;
+				cnt++;
+			}
+			else if (s[l + 1] == s[r] && (l + 1 < r)) {
+				l++;
+				cnt++;
+			}
+			else if (s[l + 1] == s[r - 1] && (l + 1 < r - 1)) {
+				l++;
+				r--;
+				cnt += 2;
+			}
+			if (cnt == 2) {
+				break;
+			}
+		}
+		l++;
+		r--;
+	}
+	return cnt;
+}
+
+
+int main() {
+	ios::sync_with_stdio(0); cin.tie(NULL); cout.tie(NULL);
+	cin >> t;
+	while (t--) {
+		cin >> s;
+		ans = 0;
+		front_cnt = 0;
+		back_cnt = 0;
+		
+		
+		front_cnt = front();
+		cnt = 0;
+		back_cnt = back();
+		cnt = 0;
+
+		
+		if (front_cnt != back_cnt && front_cnt != 0 && back_cnt != 0) {
+			ans = min(front_cnt,back_cnt);
+		}
+		else {
+			ans = front_cnt;
+		}
+		cout << ans << "\n";
+
+
+	}
+}
